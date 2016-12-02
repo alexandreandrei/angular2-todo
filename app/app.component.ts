@@ -1,14 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Task } from './task';
 @Component({
   selector: 'my-app',
-  template: '<h1>Hello, my name is {{name}}.</h1><button (click)="changeName()">Change</button>'
+  template: `
+  {{tasks.length}}
+  <ul>
+    <li *ngFor="let task of tasks">
+      {{task.title}} --- {{task.description}}
+    </li>
+  </ul>
+  <input [(ngModel)]="task.title"/>
+  <input [(ngModel)]="task.description"/>
+  <button (click)="addTask()">ajouter</button>`
 })
-export class AppComponent {
-  name: string;
-  constructor() {
-    this.name = 'James Bond';
+export class AppComponent implements OnInit {
+  task: Task;
+
+  initTask(): void {
+    this.task = {
+      title: '', description: ''
+    };
   }
-  changeName() {
-    this.name = 'Ron Swanson';
+
+  ngOnInit(): void {
+    this.initTask();
   }
+
+  tasks: Task[] = [];
+  addTask(): void {
+    this.tasks.push(this.task);
+    this.initTask();
+  }
+
 }
